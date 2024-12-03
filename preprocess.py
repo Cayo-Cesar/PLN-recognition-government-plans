@@ -4,11 +4,9 @@ import re
 import nltk
 from nltk.corpus import stopwords
 
-# Baixar stopwords para português
 nltk.download('stopwords')
 stopwords_pt = set(stopwords.words('portuguese'))
 
-# Função para extrair texto do PDF
 def extrair_texto_pdf(caminho_pdf):
     with pdfplumber.open(caminho_pdf) as pdf:
         texto = ''
@@ -28,7 +26,7 @@ def limpar_texto(texto):
     return ' '.join(palavras_filtradas)
 
 # Caminho da pasta com os PDFs
-pasta_pdfs = "C:\\Users\\Cayo Cesar\\OneDrive - ufpi.edu.br\\Documentos\\GitHub\\PLN-recognition-government-plans\\dataset"
+pasta_pdfs = "C:\\Users\\Cayo Cesar\\OneDrive - ufpi.edu.br\\Documentos\\GitHub\\sgm-aws\\PLN-recognition-government-plans\\dataset"
 
 # Lista todos os arquivos PDF na pasta
 arquivos_pdf = [os.path.join(pasta_pdfs, f) for f in os.listdir(pasta_pdfs) if f.endswith('.pdf')]
