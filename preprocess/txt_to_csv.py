@@ -22,16 +22,16 @@ def txt_para_csv(caminho_txt, caminho_csv, cabecalho="Proposta"):
         print(f"Ocorreu um erro: {e}")
 
 # Converter os arquivos de treino para csv
-txt_para_csv("treino/saude.txt", "treino/saude.csv", "Saude")
-txt_para_csv("treino/educacao.txt", "treino/educacao.csv", "Educacao")
-# txt_para_csv("treino/seguranca.txt", "treino/seguranca.csv", "Seguranca")
+txt_para_csv("treino/saude_treino.txt", "treino/saude_treino.csv", "Saude")
+txt_para_csv("treino/educacao_treino.txt", "treino/educacao_treino.csv", "Educacao")
+txt_para_csv("treino/seguranca_treino.txt", "treino/seguranca_treino.csv", "Seguranca")
 # txt_para_csv("treino/meio_ambiente.txt", "treino/meio_ambiente.csv", "Meio Ambiente")
 # txt_para_csv("treino/cultura.txt", "treino/cultura.csv", "Cultura")
 
 # Converter os arquivos de teste para csv
 txt_para_csv("teste/saude_teste.txt", "teste/saude_teste.csv", "Saude")
 txt_para_csv("teste/educacao_teste.txt", "teste/educacao_teste.csv", "Educacao")
-# txt_para_csv("teste/seguranca_teste.txt", "teste/seguranca_teste.csv", "Seguranca")
+txt_para_csv("teste/seguranca_teste.txt", "teste/seguranca_teste.csv", "Seguranca")
 # txt_para_csv("teste/meio_ambiente_teste.txt", "teste/meio_ambiente_teste.csv", "Meio Ambiente")
 # txt_para_csv("teste/cultura_teste.txt", "teste/cultura_teste.csv", "Cultura")
 
