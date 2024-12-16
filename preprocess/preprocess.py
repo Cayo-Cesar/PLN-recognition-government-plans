@@ -10,8 +10,8 @@ nltk.download("stopwords")
 stop_words = set(stopwords.words("portuguese"))
 pontuacao = set(string.punctuation)
 
-caminho_entrada = "propostas_treino.csv"  
-caminho_saida = "propostas_treino_processados.csv"
+caminho_entrada = "dataset/propostas.csv"  
+caminho_saida = "dataset/propostas_preprocessadas.csv"
 
 def preprocessar_sentenca(sentenca):
     sentenca = sentenca.lower()
