@@ -1,8 +1,8 @@
 import pandas as pd
 
-saude_df = pd.read_csv('treino/saude_treino.csv')
-seguranca_df = pd.read_csv('treino/seguranca_treino.csv')
-educacao_df = pd.read_csv('treino/educacao_treino.csv')
+saude_df = pd.read_csv('dataset/saude.csv')
+seguranca_df = pd.read_csv('dataset/seguranca.csv')
+educacao_df = pd.read_csv('dataset/educacao.csv')
 
 saude_df['Eixo'] = 'Saúde'
 seguranca_df['Eixo'] = 'Segurança'
