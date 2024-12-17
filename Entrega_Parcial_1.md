@@ -50,7 +50,7 @@ Os textos passaram por um preprocessamento inicial, incluindo:
 2. **Definição dos Modelos**:
    - **Random Forest**: Modelo implementado usando **TF-IDF** como representação vetorial do texto.
    - **MLP**: Rede neural implementada usando embeddings de palavras como entrada.
-   - **BERT**: 
+   - **BERT**: Modelo baseado em Transformers para aprendizado profundo, utilizando embeddings contextuais e classificação.
 3. **Validação Inicial**:
    - Modelos foram testados em um subconjunto dos dados para validar a pipeline.
    - **Métricas Iniciais**: Acurácia e relatórios de classificação foram obtidos para Random Forest.
