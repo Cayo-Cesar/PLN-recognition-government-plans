@@ -35,21 +35,21 @@ y_pred = rf.predict(X_val_tfidf)
 print("\nRelatório de Classificação:")
 print(classification_report(y_val, y_pred))
 
-conf_matrix = confusion_matrix(y_val, y_pred)
-plt.figure(figsize=(8, 6))
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap="Blues", xticklabels=sorted(set(labels)), yticklabels=sorted(set(labels)))
-plt.title("Matriz de Confusão")
-plt.xlabel("Predito")
-plt.ylabel("Real")
-plt.show()
+# conf_matrix = confusion_matrix(y_val, y_pred)
+# plt.figure(figsize=(8, 6))
+# sns.heatmap(conf_matrix, annot=True, fmt='d', cmap="Blues", xticklabels=sorted(set(labels)), yticklabels=sorted(set(labels)))
+# plt.title("Matriz de Confusão")
+# plt.xlabel("Predito")
+# plt.ylabel("Real")
+# plt.show()
 
-importances = rf.feature_importances_
-feature_names = vectorizer.get_feature_names_out()
+# importances = rf.feature_importances_
+# feature_names = vectorizer.get_feature_names_out()
 
-sorted_indices = importances.argsort()[::-1][:10]  
-plt.figure(figsize=(10, 6))
-plt.barh([feature_names[i] for i in sorted_indices], importances[sorted_indices])
-plt.gca().invert_yaxis()
-plt.title("Top 10 Palavras mais Importantes")
-plt.xlabel("Importância")
-plt.show()
+# sorted_indices = importances.argsort()[::-1][:10]  
+# plt.figure(figsize=(10, 6))
+# plt.barh([feature_names[i] for i in sorted_indices], importances[sorted_indices])
+# plt.gca().invert_yaxis()
+# plt.title("Top 10 Palavras mais Importantes")
+# plt.xlabel("Importância")
+# plt.show()
