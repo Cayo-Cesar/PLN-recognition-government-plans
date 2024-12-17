@@ -32,7 +32,8 @@ A base de dados utilizada consiste em **propostas de governo preprocessadas**, r
 - **Distribuição das Classes**:
     - Saúde: 218 Propostas.
     - Educação: 257 Propostas.
-    - Segurança: 228 Propostas .
+    - Segurança: 228 Propostas
+    - Meio Ambiente: 231 Propostas
 
 Os textos passaram por um preprocessamento inicial, incluindo:
 - Remoção de stopwords.
