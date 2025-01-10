@@ -65,3 +65,15 @@ plt.title("Matriz de Confusão")
 plt.xlabel("Predito")
 plt.ylabel("Real")
 plt.show()
+
+importances = model.layers[0].get_weights()[0].mean(axis=0)
+indices = importances.argsort()[::-1]
+feature_names = vectorizer.get_feature_names_out()
+
+plt.figure(figsize=(10, 6))
+plt.bar([feature_names[i] for i in indices[:10]], importances[indices[:10]])
+plt.gca().invert_xaxis()
+plt.title("Top 10 Palavras mais Importantes")
+plt.xlabel("Importância")
+
+plt.show()
