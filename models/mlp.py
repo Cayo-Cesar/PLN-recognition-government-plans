@@ -12,8 +12,6 @@ import seaborn as sns
 caminho_csv = "dataset/propostas_preprocessadas.csv"
 df = pd.read_csv(caminho_csv)
 
-
-
 if "Proposta" not in df.columns or "Eixo" not in df.columns:
     raise ValueError("O dataset precisa conter as colunas 'Proposta' e 'Eixo'.")
 
