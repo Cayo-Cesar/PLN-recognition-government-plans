@@ -9,7 +9,7 @@ from datasets import Dataset
 import torch
 
 # 1. Carregar os dados do arquivo CSV
-data = pd.read_csv("../dataset/propostas.csv")
+data = pd.read_csv("dataset/propostas_preprocessadas.csv")
 
 # Verificar os dados
 print(data.head())

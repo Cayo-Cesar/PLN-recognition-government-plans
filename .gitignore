@@ -27,6 +27,8 @@ share/python-wheels/
 MANIFEST
 /txt
 /Planos
+/results
+/model
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
