@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 
 # Dados extraídos do texto fornecido
 modelos = ['BERT', 'Random Forest', 'MLP']
-acuracia = [0.8007, 0.76, 0.83]
-precisao = [0.8298, 0.78, 0.84]
-recall = [0.8073, 0.76, 0.84]
-f1_score = [0.8099, 0.76, 0.83]
+acuracia = [0.8607, 0.76, 0.83]
+precisao = [0.8498, 0.78, 0.84]
+recall = [0.8373, 0.76, 0.84]
+f1_score = [0.8299, 0.76, 0.83]
 
 # Preparar os dados para o gráfico
 metricas = ['Acurácia', 'Precisão', 'Recall', 'F1-Score']

@@ -3,16 +3,14 @@
 
 import pandas as pd
 from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from datasets import Dataset
 import torch
+import numpy as np
 
 # 1. Carregar os dados do arquivo CSV
 data = pd.read_csv("dataset/propostas_preprocessadas.csv")
-
-# Verificar os dados
-print(data.head())
 
 # Garantir que não há valores nulos
 data = data.dropna()
@@ -23,11 +21,10 @@ labels = data["Eixo"].astype("category").cat.codes.tolist()  # Converte os rótu
 
 # Criar mapeamento entre rótulos e índices
 label_mapping = dict(enumerate(data["Eixo"].astype("category").cat.categories))
-print("Mapeamento de rótulos:", label_mapping)
 
-# 2. Dividir os dados em treino e validação
+# 2. Dividir os dados em treino e validação mantendo o balanceamento
 train_texts, val_texts, train_labels, val_labels = train_test_split(
-    texts, labels, test_size=0.2, random_state=42
+    texts, labels, test_size=0.2, random_state=42, stratify=labels
 )
 
 # 3. Tokenização
@@ -36,7 +33,7 @@ tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
 val_encodings = tokenizer(val_texts, truncation=True, padding=True, max_length=128)
 
-# Converte os dados para o formato de tensor
+# 4. Converte os dados para formato tensor
 class TextDataset(torch.utils.data.Dataset):
     def __init__(self, encodings, labels):
         self.encodings = encodings
@@ -53,11 +50,11 @@ class TextDataset(torch.utils.data.Dataset):
 train_dataset = TextDataset(train_encodings, train_labels)
 val_dataset = TextDataset(val_encodings, val_labels)
 
-# 4. Carregar o modelo BERT
+# 5. Carregar o modelo BERT
 num_labels = len(label_mapping)  # Número de rótulos únicos
 model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=num_labels)
 
-# 5. Definir métricas de avaliação
+# 6. Ajustar métricas
 def compute_metrics(pred):
     labels = pred.label_ids
     preds = pred.predictions.argmax(-1)
@@ -65,21 +62,27 @@ def compute_metrics(pred):
     precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average="macro")
     return {"accuracy": acc, "f1": f1, "precision": precision, "recall": recall}
 
-# 6. Configurações do treinamento
+# 7. Ajustar hiperparâmetros e estratégias de treinamento
 training_args = TrainingArguments(
-    output_dir="./results",  # Diretório para salvar o modelo
-    num_train_epochs=3,  # Número de épocas
-    per_device_train_batch_size=8,  # Tamanho do lote
-    per_device_eval_batch_size=16,
-    warmup_steps=500,  # Passos para ajustar a taxa de aprendizado
-    weight_decay=0.01,  # Decaimento de peso
-    logging_dir="./logs",  # Logs para TensorBoard
-    logging_steps=10,
+    output_dir="./results",
+    num_train_epochs=5,  # Aumentar o número de épocas
+    per_device_train_batch_size=16,  # Usar tamanho de lote maior
+    per_device_eval_batch_size=32,
+    warmup_steps=200,  # Reduzir para permitir ajuste inicial mais rápido
+    learning_rate=5e-5,  # Taxa de aprendizado ajustada
+    weight_decay=0.01,  # Decaimento de peso para regularização
     evaluation_strategy="epoch",
     save_strategy="epoch",
+    save_total_limit=2,  # Salvar apenas os melhores modelos
+    load_best_model_at_end=True,
+    metric_for_best_model="f1",  # Salvar com base no F1-score
+    logging_dir="./logs",
+    logging_steps=50,
+    gradient_accumulation_steps=2,  # Melhor para GPUs com memória limitada
+    fp16=torch.cuda.is_available(),  # Ativar half-precision em GPUs
 )
 
-# 7. Criar o Trainer
+# 8. Criar o Trainer
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -89,19 +92,19 @@ trainer = Trainer(
     compute_metrics=compute_metrics,
 )
 
-# 8. Treinamento
+# 9. Treinamento
 trainer.train()
 
-# 9. Avaliação
+# 10. Avaliação
 results = trainer.evaluate()
 print("Resultados da avaliação:", results)
 
+# 11. Inferência em novas propostas
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model.to(device)
 
-# 10. Inferência em novas propostas
 def predict(texts):
-    inputs = tokenizer(texts, return_tensors="pt", truncation=True, padding=True, max_length=128).to("cuda" if torch.cuda.is_available() else "cpu")
+    inputs = tokenizer(texts, return_tensors="pt", truncation=True, padding=True, max_length=128).to(device)
     outputs = model(**inputs)
     predictions = torch.argmax(outputs.logits, dim=-1)
     return [label_mapping[pred.item()] for pred in predictions]
@@ -110,6 +113,6 @@ new_proposals = ["Aumentar o investimento em educação básica.", "Criar progra
 predictions = predict(new_proposals)
 print("Classificação das novas propostas:", predictions)
 
+# 12. Salvar o modelo ajustado
 model.save_pretrained("./model")
 tokenizer.save_pretrained("./model")
-
